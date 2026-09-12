@@ -7,9 +7,22 @@ var grid = document.createElement("div"); // creating a separate div for the gri
 grid.setAttribute("id", "grid");
 container.appendChild(grid);
 
+var gridSize = 16; // initial value
+
+function getRandomRGBValue(){
+    return Math.floor(Math.random() * 256);
+}
+
 function createGrid(squareNum){
+    // removes old grid and creates a new one with the new size
+
     // bug: div pixel sizes (apparently) truncate to 4 decimal places, so if the div has more than that
     // there will be some blank space unnocupied by squares in the grid DOM element
+    grid.remove();
+    grid = document.createElement("div");
+    grid.setAttribute("id", "grid");
+    container.appendChild(grid);
+
     for(i = 0; i < squareNum; i++){
         const gridLine = document.createElement("div");
         gridLine.style.display = "flex";
@@ -22,13 +35,13 @@ function createGrid(squareNum){
             square.style.height = squareSize + "px";
             gridLine.appendChild(square);
             square.addEventListener("mouseover", (e) => {
-                e.target.style.backgroundColor = "black";
+                e.target.style.backgroundColor = `rgb(${getRandomRGBValue()}, ${getRandomRGBValue()}, ${getRandomRGBValue()})`;
             });
         }
-}
+    }
 }
 
-createGrid(16);
+createGrid(gridSize);
 
 const gridResizerBtn = document.getElementById("resizer");
 gridResizerBtn.addEventListener("click", () => {
@@ -38,10 +51,11 @@ gridResizerBtn.addEventListener("click", () => {
         userInput = prompt("Please input a valid value");
     }
     
-    userInput = Number(userInput);
-    grid.remove();
-    grid = document.createElement("div");
-    grid.setAttribute("id", "grid");
-    container.appendChild(grid);
-    createGrid(userInput);
+    gridSize = Number(userInput);
+    createGrid(gridSize);
+})
+
+const gridClearBtn = document.getElementById("clearer");
+gridClearBtn.addEventListener("click", () => {
+    createGrid(gridSize);
 })
