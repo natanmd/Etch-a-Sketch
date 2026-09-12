@@ -8,6 +8,7 @@ grid.setAttribute("id", "grid");
 container.appendChild(grid);
 
 var gridSize = 16; // initial value
+var squareOpacity = 0;
 
 function getRandomRGBValue(){
     return Math.floor(Math.random() * 256);
@@ -36,6 +37,10 @@ function createGrid(squareNum){
             gridLine.appendChild(square);
             square.addEventListener("mouseover", (e) => {
                 e.target.style.backgroundColor = `rgb(${getRandomRGBValue()}, ${getRandomRGBValue()}, ${getRandomRGBValue()})`;
+                // e.target.style.backgroundColor = "black";
+                e.target.style.opacity = `${squareOpacity}%`
+                squareOpacity = (squareOpacity + 10) % 100;
+                console.log(squareOpacity);
             });
         }
     }
