@@ -7,24 +7,28 @@ var grid = document.createElement("div"); // creating a separate div for the gri
 grid.setAttribute("id", "grid");
 container.appendChild(grid);
 
-for(i = 0; i < 16; i++){
-    const gridLine = document.createElement("div");
-    // gridLine.classList.add("gridLine");
-    gridLine.style.display = "flex";
-    grid.appendChild(gridLine);
-    for(j = 0; j < 16; j++){
-        const square = document.createElement("div");
-        const squareSize = 64;
-        square.style.width = "" + squareSize + "px";
-        square.style.height = "" + squareSize + "px";
-        square.classList.add("square");
-        gridLine.appendChild(square);
-        square.addEventListener("mouseover", (e) => {
-            e.target.style.backgroundColor = "black";
-            // console.log(e);
-        });
-    }
+function createGrid(squareNum){
+    // bug: div pixel sizes (apparently) truncate to 4 decimal places, so if the div has more than that
+    // there will be some blank space unnocupied by squares in the grid DOM element
+    for(i = 0; i < squareNum; i++){
+        const gridLine = document.createElement("div");
+        gridLine.style.display = "flex";
+        grid.appendChild(gridLine);
+        
+        for(j = 0; j < squareNum; j++){
+            const square = document.createElement("div");
+            const squareSize = MAXSIZE/squareNum;
+            square.style.width = squareSize + "px";
+            square.style.height = squareSize + "px";
+            gridLine.appendChild(square);
+            square.addEventListener("mouseover", (e) => {
+                e.target.style.backgroundColor = "black";
+            });
+        }
 }
+}
+
+createGrid(16);
 
 const gridResizerBtn = document.getElementById("resizer");
 gridResizerBtn.addEventListener("click", () => {
@@ -39,32 +43,5 @@ gridResizerBtn.addEventListener("click", () => {
     grid = document.createElement("div");
     grid.setAttribute("id", "grid");
     container.appendChild(grid);
-
-    const newSquareSize = MAXSIZE/userInput; 
-    // bug: div pixel sizes (apparently) truncate to 4 decimal places, so if the div has more than that
-    // there will be some blank space unnocupied by squares in the grid DOM element
-    // console.log(newSquareSize);
-
-    for(i = 0; i < userInput; i++){
-        const gridLine = document.createElement("div");
-        // gridLine.classList.add("gridLine");
-        gridLine.style.display = "flex";
-        grid.appendChild(gridLine);
-        for(j = 0; j < userInput; j++){
-            const square = document.createElement("div");
-            square.style.width = newSquareSize + "px";
-            square.style.height = newSquareSize + "px";
-            square.classList.add("square");
-            gridLine.appendChild(square);
-            square.addEventListener("mouseover", (e) => {
-                e.target.style.backgroundColor = "black";
-                // console.log(e);
-            });
-        }
-    }
+    createGrid(userInput);
 })
-
-
-
-// n -> numero de squares
-// cada square precisa ter 1024/n pixels ao todo (borda 1px + dentro)
